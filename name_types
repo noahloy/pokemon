@@ -1,0 +1,21 @@
+var fetch = require('node-fetch')
+var fs = require('fs')
+function getPokemon(pokemonFile){
+  fs.readFile(pokemonFile,'utf8',function(err, data){
+      data = data.split("\r\n")
+      pokemonOut = {}
+       for (var i = 0; i < data.length; i++) {
+           let pokemon = data[i]
+       const url = `https://pokeapi.co/api/v2/pokemon/${pokemon}`
+   fetch(url)
+    .then(res => res.json())
+    .then(res => {
+        var pokeTypes = []
+        for (var j = 0; j < res.types.length; j++) {
+            pokeTypes.push(res.types[j].type.name)
+        }
+        console.log(`${pokemon}: ${pokeTypes}`)
+        })
+       }
+  })
+}
